@@ -15,9 +15,13 @@ export const formatCSS = (css: string) => ({
 
     return formatCSS(cssString);
   },
-  sanatize() {
-    const sanatized = css.replace(/\s+|\\+/gm, "");
-    return formatCSS(sanatized);
+  minify() {
+    return formatCSS(
+      css
+        .replace(/\/\/.*|\/\*[\s\S]*?\*\//g, "")
+        .replace(/\s*([{}:;,])\s*/g, "$1")
+        .replace(/\s+/g, " ")
+    );
   },
   get() {
     return css;
