@@ -29,7 +29,7 @@ const styleJSON = twj(`bg-white mx-auto`);
 
 | Option | Type    | Default | Result                                                        |
 | ------ | ------- | ------- | ------------------------------------------------------------- |
-| minify | boolean | true    | Compresses the CSS codecode                                   |
+| minify | boolean | true    | Compresses the CSS code                                       |
 | merge  | boolean | true    | Combines all generated CSS classes into a single style block. |
 
 #### Example:
