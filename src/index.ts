@@ -1,75 +1,43 @@
-import { TailwindConfig } from "tailwindcss/tailwindconfig.faketype";
+import types from "..";
 import { processTailwindCSS, formatCSS } from "./util";
+import { cssToJson } from "./util/css-to-json";
 
-class TailwindInlineCSS {
-  tailwindConfig: TailwindConfig = {
-    corePlugins: { preflight: false },
+const getCSS: typeof types.getCSS = (content, config) =>
+  processTailwindCSS({
+    config: {
+      corePlugins: { preflight: false },
+      ...config,
+    },
+    content,
+  });
+
+const tailwindToCSS: typeof types.tailwindToCSS = ({ config, options }) => ({
+  twi: tailwindInlineCSS(config, options),
+  twj: tailwindInlineJson(config, options),
+});
+
+const tailwindInlineCSS: typeof types.tailwindInlineCSS =
+  (config, mainOptions) => (content, options) => {
+    const defaultOptions = { merge: true, minify: true };
+    const twiOptions = { ...defaultOptions, ...mainOptions, ...options };
+
+    const cssContent = typeof content === "string" ? content : content.join(" ");
+
+    let css = formatCSS(getCSS(cssContent, config));
+    if (twiOptions?.minify) css = css.minify();
+    if (twiOptions?.merge) css = css.merge();
+
+    css.fixRGB();
+
+    return css.get();
   };
 
-  setConfig(config: TailwindConfig) {
-    this.tailwindConfig = {
-      ...this.tailwindConfig,
-      ...config,
-    };
-  }
+const tailwindInlineJson: typeof types.tailwindInlineJson =
+  (config, mainOptions) => (content, options) => {
+    return cssToJson(tailwindInlineCSS(config, mainOptions)(content, options));
+  };
 
-  private getCSS(content: string) {
-    return processTailwindCSS({ config: this.tailwindConfig, content });
-  }
+const twi: typeof types.twi = tailwindInlineCSS();
+const twj: typeof types.twj = tailwindInlineJson();
 
-  getStyles(content: string) {
-    return formatCSS(this.getCSS(content)).minify().get();
-  }
-
-  getInline(content: string) {
-    return formatCSS(this.getCSS(content)).merge().minify().get();
-  }
-
-  private parseHTML(html: string) {
-    const sanatizedHTML = html.replace(/classname=/gim, "class=");
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(sanatizedHTML, "text/html");
-    return doc;
-  }
-
-  parseHTMLInline(html: string) {
-    const firstTagRegex = /<([^>\s]+)[^>]*>/;
-    const [, firstTag] = html.match(firstTagRegex) || [];
-
-    const doc = this.parseHTML(html);
-    const elements = doc.querySelectorAll("*");
-
-    elements.forEach((element: Element) => {
-      const classList = element.classList;
-      if (classList.length === 0) {
-        return;
-      }
-
-      let style = element.getAttribute("style") || "";
-      const tailwindCSS = this.getInline(`font-sans ${classList.value}`);
-      style = formatCSS(`${style} ${tailwindCSS}`).merge().minify().get();
-
-      element.setAttribute("style", style);
-      element.removeAttribute("class");
-    });
-
-    const initialElement = doc.querySelector(firstTag);
-
-    return initialElement?.outerHTML;
-  }
-
-  parseHTMLStyles(html: string) {
-    const doc = this.parseHTML(html);
-
-    this.setConfig({ corePlugins: { preflight: true } });
-    const allStyles = this.getStyles(doc.documentElement.outerHTML);
-
-    const styleEl = document.createElement("style");
-    styleEl.innerHTML = allStyles;
-    doc.querySelector("head")?.append(styleEl);
-
-    return doc.documentElement.outerHTML;
-  }
-}
-
-export const twi = new TailwindInlineCSS();
+export { twi, twj, tailwindToCSS };

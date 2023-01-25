@@ -1,3 +1,7 @@
-import { twi } from "..";
+import { twi, tailwindToCSS, twj } from "..";
 
-(window as any).twi = twi;
+const w = window as any;
+
+w.twi = twi;
+w.twj = twj;
+w.tailwindToCSS = tailwindToCSS;

@@ -1,5 +1,5 @@
 import { readdir, readFile } from "fs/promises";
-import { parse, sep } from "path";
+import { parse } from "path";
 import { fileURLToPath } from "url";
 import { build, BuildOptions } from "esbuild";
 
@@ -13,28 +13,26 @@ const buildConfig: BuildOptions = {
     {
       name: "alias",
       async setup({ onLoad, onResolve, resolve }) {
-        // These packages are imported, but can be stubbed.
         const stubFiles = await readdir("src/stubs", { withFileTypes: true });
         const stubNames = stubFiles
           .filter((file) => file.isFile())
           .map((file) => parse(file.name).name);
+
         onResolve({ filter: new RegExp(`^(${stubNames.join("|")})$`) }, ({ path }) => ({
           path: fileURLToPath(new URL(`stubs/${path}.ts`, import.meta.url)),
           sideEffects: false,
         }));
 
-        // The tailwindcss main export exports CJS, but we can get better tree shaking if we import
-        // from the ESM src directoy instead.
         onResolve({ filter: /^tailwindcss$/ }, ({ path, ...options }) =>
           resolve("tailwindcss/src", options)
         );
+
         onResolve({ filter: /^tailwindcss\/lib/ }, ({ path, ...options }) =>
           resolve(path.replace("lib", "src"), options)
         );
 
-        // This file pulls in a number of dependencies, but we don’t really need it anyway.
         onResolve({ filter: /^\.+\/(util\/)?log$/, namespace: "file" }, ({ path, ...options }) => {
-          if (options.importer.includes(`${sep}tailwindcss${sep}`)) {
+          if (options.importer.includes("tailwindcss")) {
             return {
               path: fileURLToPath(new URL("stubs/tailwindcss/utils/log.ts", import.meta.url)),
               sideEffects: false,
@@ -46,13 +44,10 @@ const buildConfig: BuildOptions = {
           });
         });
 
-        // CJS doesn’t require extensions, but ESM does. Since our package uses ESM, but dependant
-        // bundled packages don’t, we need to add it ourselves.
         onResolve({ filter: /^postcss-selector-parser\/.*\/\w+$/ }, ({ path, ...options }) =>
           resolve(`${path}.js`, options)
         );
 
-        // minify and include the preflight.css in the javascript
         onLoad({ filter: /tailwindcss\/src\/css\/preflight\.css$/ }, async ({ path }) => {
           const result = await build({
             entryPoints: [path],
@@ -63,8 +58,6 @@ const buildConfig: BuildOptions = {
           return { contents: result.outputFiles[0].text, loader: "text" };
         });
 
-        // Rewrite the tailwind stubs from CJS to ESM, so our bundle doesn’t need to include any CJS
-        // related logic.
         onLoad({ filter: /\/tailwindcss\/stubs\/defaultConfig\.stub\.js$/ }, async ({ path }) => {
           const cjs = await readFile(path, "utf8");
           const esm = cjs.replace("module.exports =", "export default");
@@ -92,7 +85,7 @@ build({
   bundle: true,
   minify: true,
   logLevel: "info",
-  format: "iife",
   outdir: "dist",
+  format: "iife",
   ...buildConfig,
 });

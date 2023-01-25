@@ -23,6 +23,15 @@ export const formatCSS = (css: string) => ({
         .replace(/\s+/g, " ")
     );
   },
+  fixRGB() {
+    let match;
+    const regex = /rgb\((\d+)[\s,]+(\d+)[\s,]+(\d+)(?:[\s,\/]+([\d.]+))?\)/g;
+    while ((match = regex.exec(css)) !== null) {
+      let [, r, g, b, a = "1"] = match;
+      css = css.replace(match[0], `rgb(${r}, ${g}, ${b}${a === "1" ? "" : `, ${a}`})`);
+    }
+    return formatCSS(css);
+  },
   get() {
     return css;
   },
