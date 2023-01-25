@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vinicoder/tailwind-inline-css.git"
+    "url": "git+https://github.com/vinicoder/tw-to-css.git"
   },
   "keywords": [
     "tailwind",
@@ -23,7 +23,7 @@
   "author": "Vinicius de Moraes (vinicoder@gmail.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vinicoder/tailwind-inline-css/issues"
+    "url": "https://github.com/vinicoder/tw-to-css/issues"
   },
   "dependencies": {
     "postcss": "8.4.21",
@@ -37,5 +37,8 @@
     "esbuild": "0.15.18",
     "ts-node": "10.9.1",
     "typescript": "4.9.4"
-  }
+  },
+  "types": "./index.d.ts",
+  "homepage": "https://github.com/vinicoder/tw-to-css#readme",
+  "main": "index.js"
 }
