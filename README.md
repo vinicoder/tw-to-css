@@ -4,6 +4,8 @@ Transform Tailwind classes to pure CSS using our plug-and-play package, compatib
 
 ## Installation
 
+#### NPM module
+
 ```sh
 npm install tw-to-css -E
 ```
