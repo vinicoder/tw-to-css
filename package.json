@@ -1,6 +1,6 @@
 {
   "name": "tw-to-css",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Tailwindcss Inline CSS",
   "module": "dist/module.esm.js",
   "unpkg": "dist/cdn.min.js",
