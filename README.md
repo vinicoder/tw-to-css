@@ -1,4 +1,4 @@
-# Tailwind to CSS (tw-to-css)
+# 🔄 Tailwind to CSS (tw-to-css)
 
 Transform Tailwind classes to pure CSS using our plug-and-play package, compatible with both CSR and SSR. The package also includes the option to convert the output to JSON for use with React or other tools.
 
