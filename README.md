@@ -26,6 +26,8 @@ const styleJSON = twj(`bg-white mx-auto`);
 // Output: {marginLeft: 'auto', marginRight: 'auto', backgroundColor: 'rgb(255, 255, 255)'}
 ```
 
+The first parameter expects the `content`, which can be in `string` or `string[]` format.
+
 ### `twi` and `twj` functions take an additional options object that allows you to configure the output.
 
 #### Options:
