@@ -12,6 +12,11 @@ npm install tw-to-css -E
 yarn add tw-to-css -E
 ```
 
+#### CDN
+```html
+<script src="https://unpkg.com/tw-to-css@0.0.1/dist/cdn.min.js"></script>
+```
+
 ## Usage
 
 ```typescript
