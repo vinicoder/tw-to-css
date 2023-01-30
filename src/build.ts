@@ -9,6 +9,10 @@ const buildConfig: BuildOptions = {
     "process.env.JEST_WORKER_ID": "1",
     __dirname: '"/"',
   },
+  supported: {
+    "nullish-coalescing": false,
+    "optional-chain": false,
+  },
   plugins: [
     {
       name: "alias",
