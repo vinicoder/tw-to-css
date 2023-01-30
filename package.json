@@ -1,6 +1,6 @@
 {
   "name": "tw-to-css",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Tailwindcss Inline CSS",
   "module": "dist/module.esm.js",
   "unpkg": "dist/cdn.min.js",
@@ -40,5 +40,5 @@
   },
   "types": "./index.d.ts",
   "homepage": "https://github.com/vinicoder/tw-to-css#readme",
-  "main": "src/index.ts"
+  "main": "./dist/module.esm.js"
 }
