@@ -1,16 +1,25 @@
 {
   "name": "tw-to-css",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Tailwindcss Inline CSS",
-  "module": "dist/module.esm.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs.js",
   "unpkg": "dist/cdn.min.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs.js",
+      "require": "./dist/index.js",
+      "browser": "./dist/cdn.min.js",
+      "types": "./index.d.ts"
+    }
+  },
   "files": [
     "index.d.ts",
     "dist/*"
   ],
-  "type": "module",
   "scripts": {
-    "build": "ts-node --esm src/build.ts"
+    "build": "tsx src/build.ts"
   },
   "repository": {
     "type": "git",
@@ -31,14 +40,19 @@
     "tailwindcss": "3.2.4"
   },
   "devDependencies": {
-    "@types/react": "^18.0.27",
     "@types/node": "18.11.18",
     "@types/postcss-css-variables": "0.18.0",
+    "@types/react": "^18.0.27",
+    "@types/tailwindcss": "3.1.0",
     "esbuild": "0.15.18",
-    "ts-node": "10.9.1",
+    "tsx": "3.12.2",
     "typescript": "4.9.4"
   },
-  "types": "./index.d.ts",
   "homepage": "https://github.com/vinicoder/tw-to-css#readme",
-  "main": "./dist/module.esm.js"
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

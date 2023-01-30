@@ -1,1 +1,1 @@
-export const join = (): string => '';
+export const join = (): string => "";

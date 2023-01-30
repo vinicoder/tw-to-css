@@ -59,7 +59,7 @@ const buildConfig: BuildOptions = {
             logLevel: "silent",
             write: false,
           });
-          return { contents: result.outputFiles[0].text, loader: "text" };
+          return { contents: "suvaco", loader: "text" };
         });
 
         onLoad({ filter: /\/tailwindcss\/stubs\/defaultConfig\.stub\.js$/ }, async ({ path }) => {
@@ -72,9 +72,20 @@ const buildConfig: BuildOptions = {
   ],
 };
 
+// COMMONJS
+build({
+  entryPoints: { index: "src/builds/module.ts" },
+  bundle: true,
+  minify: true,
+  logLevel: "info",
+  outdir: "dist",
+  format: "cjs",
+  ...buildConfig,
+});
+
 // MODULE
 build({
-  entryPoints: { "module.esm": "src/builds/module.ts" },
+  entryPoints: { "index.mjs": "src/builds/module.ts" },
   bundle: true,
   minify: true,
   logLevel: "info",
