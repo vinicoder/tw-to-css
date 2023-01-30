@@ -17,7 +17,7 @@ yarn add tw-to-css -E
 #### CDN
 
 ```html
-<script src="https://unpkg.com/tw-to-css@0.0.3/dist/cdn.min.js"></script>
+<script src="https://unpkg.com/tw-to-css@0.0.5/dist/cdn.min.js"></script>
 ```
 
 ## Usage
