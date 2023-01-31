@@ -59,7 +59,7 @@ const buildConfig: BuildOptions = {
             logLevel: "silent",
             write: false,
           });
-          return { contents: "suvaco", loader: "text" };
+          return { contents: result.outputFiles[0].text, loader: "text" };
         });
 
         onLoad({ filter: /\/tailwindcss\/stubs\/defaultConfig\.stub\.js$/ }, async ({ path }) => {
