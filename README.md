@@ -2,15 +2,25 @@
 
 Transform Tailwind classes to pure CSS using our plug-and-play package, compatible with both CSR and SSR. The package also includes the option to convert the output to JSON for use with React or other tools.
 
+Here's a list of advantages of using the package:
+
+- ✅ Simplifies integration of Tailwind CSS into projects
+- ✅ Compatible with both Client-side and Server-side Rendering
+- ✅ Plug-and-play, no configuration necessary
+- ✅ Option to convert output to JSON for use with React or other tools
+- ✅ Improves performance by eliminating runtime processing
+- ✅ Reduces project size and build time
+- ✅ Maintains the readability and maintainability of the Tailwind CSS codebase
+
 ## Installation
 
 #### NPM module
 
-```sh
+```sh npm
 npm install tw-to-css -E
 ```
 
-```sh
+```sh yarn
 yarn add tw-to-css -E
 ```
 
@@ -34,7 +44,31 @@ const styleJSON = twj(`bg-white mx-auto`);
 // Output: {marginLeft: 'auto', marginRight: 'auto', backgroundColor: 'rgb(255, 255, 255)'}
 ```
 
-The first parameter expects the `content`, which can be in `string` or `string[]` format.
+## The `twi` and `twj` functions accept multiple types of inputs.
+
+- Template Literal
+
+```typescript
+tw`bg-blue-700 ${false && "rounded"}`;
+```
+
+- Objects
+
+```typescript
+tw({ "bg-blue-700": true, rounded: false, underline: isTrue() });
+```
+
+- Strings
+
+```typescript
+tw("bg-blue-700", true && "rounded", "underline");
+```
+
+- Arrays
+
+```typescript
+tw(["bg-blue-700"], ["text-white", "rounded"], [["underline"]]);
+```
 
 ### `twi` and `twj` functions take an additional options object that allows you to configure the output.
 
