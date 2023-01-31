@@ -49,25 +49,25 @@ const styleJSON = twj(`bg-white mx-auto`);
 - Template Literal
 
 ```typescript
-tw`bg-blue-700 ${false && "rounded"}`;
+twi`bg-blue-700 ${false && "rounded"}`;
 ```
 
 - Objects
 
 ```typescript
-tw({ "bg-blue-700": true, rounded: false, underline: isTrue() });
+twi({ "bg-blue-700": true, rounded: false, underline: isTrue() });
 ```
 
 - Strings
 
 ```typescript
-tw("bg-blue-700", true && "rounded", "underline");
+twi("bg-blue-700", true && "rounded", "underline");
 ```
 
 - Arrays
 
 ```typescript
-tw(["bg-blue-700"], ["text-white", "rounded"], [["underline"]]);
+twi(["bg-blue-700"], ["text-white", "rounded"], [["underline"]]);
 ```
 
 ### `twi` and `twj` functions take an additional options object that allows you to configure the output.
