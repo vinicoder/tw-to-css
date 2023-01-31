@@ -4,13 +4,13 @@ Transform Tailwind classes to pure CSS using our plug-and-play package, compatib
 
 Here's a list of advantages of using the package:
 
-✅ Simplifies integration of Tailwind CSS into projects
-✅ Compatible with both Client-side and Server-side Rendering
-✅ Plug-and-play, no configuration necessary
-✅ Option to convert output to JSON for use with React or other tools
-✅ Improves performance by eliminating runtime processing
-✅ Reduces project size and build time
-✅ Maintains the readability and maintainability of the Tailwind CSS codebase
+- ✅ Simplifies integration of Tailwind CSS into projects
+- ✅ Compatible with both Client-side and Server-side Rendering
+- ✅ Plug-and-play, no configuration necessary
+- ✅ Option to convert output to JSON for use with React or other tools
+- ✅ Improves performance by eliminating runtime processing
+- ✅ Reduces project size and build time
+- ✅ Maintains the readability and maintainability of the Tailwind CSS codebase
 
 ## Installation
 
