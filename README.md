@@ -44,7 +44,7 @@ const styleJSON = twj(`bg-white mx-auto`);
 // Output: {marginLeft: 'auto', marginRight: 'auto', backgroundColor: 'rgb(255, 255, 255)'}
 ```
 
-## The `twi` and `twj` functions accept multiple types of inputs.
+### The `twi` and `twj` functions accept multiple types of inputs.
 
 - Template Literal
 
@@ -58,16 +58,16 @@ twi`bg-blue-700 ${false && "rounded"}`;
 twi({ "bg-blue-700": true, rounded: false, underline: isTrue() });
 ```
 
-- Strings
-
-```typescript
-twi("bg-blue-700", true && "rounded", "underline");
-```
-
 - Arrays
 
 ```typescript
-twi(["bg-blue-700"], ["text-white", "rounded"], [["underline"]]);
+twi([["bg-blue-700"], ["text-white", "rounded"], [["underline"]]]);
+```
+
+- String
+
+```typescript
+twi("bg-blue-700 text-white");
 ```
 
 ### `twi` and `twj` functions take an additional options object that allows you to configure the output.
