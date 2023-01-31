@@ -16,14 +16,39 @@ const tailwindToCSS: typeof types.tailwindToCSS = ({ config, options }) => ({
   twj: tailwindInlineJson(config, options),
 });
 
+const classListFormatter: typeof types.classListFormatter = (...params) => {
+  let classList = "";
+
+  if (typeof params[0] === "string") {
+    classList = params[0];
+  } else if (Array.isArray(params[0])) {
+    classList = (params as any[])
+      .flat(Infinity)
+      .map((styles) => classListFormatter(styles))
+      .join(" ");
+  } else if (typeof params[0] === "object") {
+    classList = Object.entries(params[0])
+      .filter((entry) => !!entry[1])
+      .map((entry) => entry[0])
+      .join(" ");
+  }
+
+  classList = classList.replaceAll(/\s+/g, " ");
+
+  return classList;
+};
+
 const tailwindInlineCSS: typeof types.tailwindInlineCSS =
-  (config, mainOptions) => (content, options) => {
+  (config, mainOptions) =>
+  (...params: any) => {
+    const content = classListFormatter(params);
+
+    const options = (!Array.isArray(params[0]) && (params[1] as object)) || {};
+
     const defaultOptions = { merge: true, minify: true };
     const twiOptions = { ...defaultOptions, ...mainOptions, ...options };
 
-    const cssContent = typeof content === "string" ? content : content.join(" ");
-
-    let css = formatCSS(getCSS(cssContent, config));
+    let css = formatCSS(getCSS(content, config));
     if (twiOptions?.minify) css = css.minify();
     if (twiOptions?.merge) css = css.merge();
 
@@ -33,11 +58,14 @@ const tailwindInlineCSS: typeof types.tailwindInlineCSS =
   };
 
 const tailwindInlineJson: typeof types.tailwindInlineJson =
-  (config, mainOptions) => (content, options) => {
-    return cssToJson(tailwindInlineCSS(config, mainOptions)(content, options));
+  (config, mainOptions) =>
+  (...params: any) => {
+    return cssToJson(tailwindInlineCSS(config, mainOptions)(params));
   };
 
 const twi: typeof types.twi = tailwindInlineCSS();
 const twj: typeof types.twj = tailwindInlineJson();
 
-export { twi, twj, tailwindToCSS };
+const twToCSS = tailwindToCSS;
+
+export { twi, twj, tailwindToCSS, twToCSS };

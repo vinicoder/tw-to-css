@@ -15,7 +15,7 @@ export interface TailwindConfig {
   plugins?: Config["plugins"];
 }
 
-type Content = string | string[];
+type Content = string | Record<string, boolean> | TemplateStringsArray | Content[];
 
 type Options = { merge?: boolean; minify?: boolean };
 
@@ -26,16 +26,15 @@ export function tailwindToCSS(params: { config?: TailwindConfig; options?: Optio
   twj: typeof twj;
 };
 
+export function classListFormatter(content: Content, options?: Options): string;
+export function classListFormatter(...content: Content[]): string;
+
 export function twi(content: Content, options?: Options): string;
+export function twi(...content: Content[]): string;
 
 export function twj(content: Content, options?: Options): CSSProperties;
+export function twj(...content: Content[]): CSSProperties;
 
-export function tailwindInlineCSS(
-  config?: TailwindConfig,
-  options?: Options
-): (content: Content, options?: Options) => string;
+export function tailwindInlineCSS(config?: TailwindConfig, options?: Options): typeof twi;
 
-export function tailwindInlineJson(
-  config?: TailwindConfig,
-  options?: Options
-): (content: Content, options?: Options) => CSSProperties;
+export function tailwindInlineJson(config?: TailwindConfig, options?: Options): typeof twj;
