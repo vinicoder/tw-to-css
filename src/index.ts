@@ -49,8 +49,8 @@ const tailwindInlineCSS: typeof types.tailwindInlineCSS =
     const twiOptions = { ...defaultOptions, ...mainOptions, ...options };
 
     let css = formatCSS(getCSS(content, config));
-    if (twiOptions?.minify) css = css.minify();
-    if (twiOptions?.merge) css = css.merge();
+    if (twiOptions?.merge) css.merge();
+    if (twiOptions?.minify) css.minify();
 
     css.fixRGB();
 
