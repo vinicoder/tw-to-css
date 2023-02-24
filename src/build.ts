@@ -13,6 +13,7 @@ const buildConfig: BuildOptions = {
     "nullish-coalescing": false,
     "optional-chain": false,
   },
+  external: ["@tailwindcss/oxide", "svgo"],
   plugins: [
     {
       name: "alias",

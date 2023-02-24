@@ -17,7 +17,7 @@ export interface TailwindConfig {
 
 type Content = string | Record<string, boolean> | TemplateStringsArray | Content[];
 
-type Options = { merge?: boolean; minify?: boolean };
+type Options = { merge?: boolean; minify?: boolean; ignoreMediaQueries?: boolean };
 
 export function getCSS(content: string, config?: TailwindConfig): string;
 
@@ -37,4 +37,7 @@ export function twj(...content: Content[]): CSSProperties;
 
 export function tailwindInlineCSS(config?: TailwindConfig, options?: Options): typeof twi;
 
-export function tailwindInlineJson(config?: TailwindConfig, options?: Options): typeof twj;
+export function tailwindInlineJson(
+  config?: TailwindConfig,
+  options?: Omit<Options, "minify" | "ignoreMediaQueries">
+): typeof twj;

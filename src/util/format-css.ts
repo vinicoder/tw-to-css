@@ -15,8 +15,7 @@ export const formatCSS = (css: string) => ({
     );
   },
   merge() {
-    const blockContentRegex =
-      /(?<=\.)[\w\d\\[\]-]+\s*\{(?<content>[^{}]*(?:(?<=;)\s*\n\r?[^{}]*)*)\s*\}/gm;
+    const blockContentRegex = /(?<=\.)[^{]+\s*\{(?<content>[^{}]*(?:(?<=;)\s*\n\r?[^{}]*)*)\s*\}/gm;
     let matchBlock: RegExpExecArray | null;
     let blockContent = "";
 
@@ -35,6 +34,37 @@ export const formatCSS = (css: string) => ({
     }
 
     css = mergedCSS;
+
+    return this;
+  },
+  removeUndefined() {
+    const undefinedPropRegex =
+      /^[^{}]*(?:[.#][a-zA-Z0-9_-]+)[^{]*{[^}]*\b(?:[a-z-]+):\s*undefined\s*;?[^}]*}/gm;
+    css = css.replace(undefinedPropRegex, "");
+
+    return this;
+  },
+  combineMediaQueries() {
+    const regex = new RegExp(
+      "@media\\s*(?<conditions>\\([^)]+\\))\\s*{(?<content>(?:[^{}]+|{(?:[^{}]+|{[^{}]*})*})+)}",
+      "gs"
+    );
+
+    const medias = new Map<string, string>();
+
+    const cleanCSS = (cssText: string) =>
+      cssText.replace(regex, (_, conditions, content) => {
+        const mediaContent = medias.get(conditions) ?? "";
+        medias.set(conditions, mediaContent + cleanCSS(content.trim()));
+        cleanCSS(content);
+        return "";
+      });
+
+    const parts = [];
+    parts.push(cleanCSS(css));
+    parts.push(...Array.from(medias, ([condition, content]) => `@media${condition}{${content}}`));
+
+    css = parts.join("");
 
     return this;
   },
@@ -71,6 +101,11 @@ export const formatCSS = (css: string) => ({
         `rgb(${red},${green},${blue}${alpha === "1" ? "" : `,${alpha}`})`
       );
     }
+
+    return this;
+  },
+  removeMediaQueries() {
+    css = css.replace(/@media[^\{]+\{[^@]+\}/g, "");
 
     return this;
   },

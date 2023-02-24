@@ -2,14 +2,21 @@ import types from "..";
 import { processTailwindCSS, formatCSS } from "./util";
 import { cssToJson } from "./util/css-to-json";
 
-const getCSS: typeof types.getCSS = (content, config) =>
-  processTailwindCSS({
+const getCSS: typeof types.getCSS = (content, config) => {
+  const preflight = ((config?.corePlugins as any)?.preflight as boolean) ?? false;
+  const corePlugins = (config?.corePlugins as {}) || {};
+
+  return processTailwindCSS({
     config: {
-      corePlugins: { preflight: false },
       ...config,
+      corePlugins: {
+        ...corePlugins,
+        preflight,
+      },
     },
     content,
   });
+};
 
 const tailwindToCSS: typeof types.tailwindToCSS = ({ config, options }) => ({
   twi: tailwindInlineCSS(config, options),
@@ -43,16 +50,24 @@ const tailwindInlineCSS: typeof types.tailwindInlineCSS =
   (...params: any) => {
     const content = classListFormatter(params);
 
-    const options = (!Array.isArray(params[0]) && (params[1] as object)) || {};
+    const { 1: options } = params || {};
 
-    const defaultOptions = { merge: true, minify: true };
+    const defaultOptions = { merge: true, minify: true, ignoreMediaQueries: true };
     const twiOptions = { ...defaultOptions, ...mainOptions, ...options };
 
     let css = formatCSS(getCSS(content, config));
-    if (twiOptions?.merge) css.merge();
-    if (twiOptions?.minify) css.minify();
+
+    if (twiOptions?.ignoreMediaQueries) {
+      css.removeMediaQueries();
+    } else {
+      css.removeUndefined();
+      css.combineMediaQueries();
+    }
 
     css.fixRGB();
+
+    if (twiOptions?.merge) css.merge();
+    if (twiOptions?.minify) css.minify();
 
     return css.get();
   };
