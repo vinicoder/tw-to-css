@@ -1,6 +1,6 @@
 {
   "name": "tw-to-css",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Tailwindcss Inline CSS",
   "main": "dist/index.js",
   "module": "dist/index.mjs.js",
