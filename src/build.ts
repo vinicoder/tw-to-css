@@ -7,13 +7,15 @@ const buildConfig: BuildOptions = {
   define: {
     "process.env.DEBUG": "undefined",
     "process.env.JEST_WORKER_ID": "1",
+    "process.env.ENGINE": "stable",
+    "process.env.OXIDE": "undefined",
     __dirname: '"/"',
   },
   supported: {
     "nullish-coalescing": false,
     "optional-chain": false,
   },
-  external: ["@tailwindcss/oxide", "svgo"],
+  external: ["svgo"],
   plugins: [
     {
       name: "alias",
@@ -24,6 +26,11 @@ const buildConfig: BuildOptions = {
           .map((file) => parse(file.name).name);
 
         onResolve({ filter: new RegExp(`^(${stubNames.join("|")})$`) }, ({ path }) => ({
+          path: fileURLToPath(new URL(`stubs/${path}.ts`, import.meta.url)),
+          sideEffects: false,
+        }));
+
+        onResolve({ filter: /^@tailwindcss\/oxide/ }, ({ path }) => ({
           path: fileURLToPath(new URL(`stubs/${path}.ts`, import.meta.url)),
           sideEffects: false,
         }));
