@@ -40,7 +40,7 @@ const classListFormatter: typeof types.classListFormatter = (...params) => {
       .join(" ");
   }
 
-  classList = classList.replaceAll(/\s+/g, " ");
+  classList = classList.replace(/\s+/g, " ");
 
   return classList;
 };
