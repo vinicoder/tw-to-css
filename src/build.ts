@@ -7,8 +7,7 @@ const buildConfig: BuildOptions = {
   define: {
     "process.env.DEBUG": "undefined",
     "process.env.JEST_WORKER_ID": "1",
-    "process.env.ENGINE": "stable",
-    "process.env.OXIDE": "undefined",
+    __OXIDE__: "undefined",
     __dirname: '"/"',
   },
   supported: {
@@ -82,11 +81,11 @@ const buildConfig: BuildOptions = {
 
 // COMMONJS
 build({
-  entryPoints: { 'index.cjs': "src/builds/module.ts" },
+  entryPoints: { "index.cjs": "src/builds/module.ts" },
   bundle: true,
   minify: true,
   logLevel: "info",
-  outfile: 'dist/index.cjs',
+  outfile: "dist/index.cjs",
   format: "cjs",
   ...buildConfig,
 });
@@ -97,7 +96,7 @@ build({
   bundle: true,
   minify: true,
   logLevel: "info",
-  outfile: 'dist/index.mjs',
+  outfile: "dist/index.mjs",
   format: "esm",
   ...buildConfig,
 });
