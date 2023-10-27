@@ -2,16 +2,16 @@
   "name": "tw-to-css",
   "version": "0.0.11",
   "description": "Tailwindcss Inline CSS",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
   "unpkg": "dist/cdn.min.js",
   "types": "./index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs.js",
-      "require": "./dist/index.js",
-      "browser": "./dist/cdn.min.js",
-      "types": "./index.d.ts"
+      "types": "./index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "browser": "./dist/cdn.min.js"
     }
   },
   "files": [

@@ -82,11 +82,11 @@ const buildConfig: BuildOptions = {
 
 // COMMONJS
 build({
-  entryPoints: { index: "src/builds/module.ts" },
+  entryPoints: { 'index.cjs': "src/builds/module.ts" },
   bundle: true,
   minify: true,
   logLevel: "info",
-  outdir: "dist",
+  outfile: 'dist/index.cjs',
   format: "cjs",
   ...buildConfig,
 });
@@ -97,7 +97,7 @@ build({
   bundle: true,
   minify: true,
   logLevel: "info",
-  outdir: "dist",
+  outfile: 'dist/index.mjs',
   format: "esm",
   ...buildConfig,
 });
